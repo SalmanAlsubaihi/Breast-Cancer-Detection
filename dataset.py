@@ -306,8 +306,8 @@ dataset_paths = {
                   'val_csv_file_path':'new_dataframes/Batch_2_FOR_PRESENTATION_cropped_labeled_tumer_meta_2_val.csv',
                   'root_dir':'../breast_cancer_data/'},
 
-    'mini_ddsm':{'train_csv_file_path':'MINI-DDSM-Complete-JPEG-8/DataWMask_train_short.csv',
-                  'val_csv_file_path':'MINI-DDSM-Complete-JPEG-8/DataWMask_val.csv',
+    'mini_ddsm':{'train_csv_file_path':'DataWMask_train_short.csv',
+                  'val_csv_file_path':'DataWMask_val.csv',
                   'root_dir':'MINI-DDSM-Complete-JPEG-8/'}
 }
 
