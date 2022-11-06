@@ -13,6 +13,37 @@ class ToFloat():
     def __call__(self, tensor):
         return tensor.type(torch.float32)
 
+class HorizontalFlip():
+    def __call__(self, img):
+        return img.transpose(Image.FLIP_LEFT_RIGHT)
+
+class ApplyWindow():
+    def __init__(self, window_type):
+        self.window_type = window_type
+    def __call__(self, img, img_info):
+        window_center = img_info[f'{self.window_type}_Center']
+        window_width = img_info[f'{self.window_type}_Width']
+        window_min, window_max = window_center - window_width/2, window_center + window_width/2
+        return img.clip(min=window_min, max=window_max)
+
+class ApplyWindowNormalize():
+    def __init__(self, window_type):
+        self.window_type = window_type
+    def __call__(self, img, img_info):
+        window_center = img_info[f'{self.window_type}_Center']
+        window_width = img_info[f'{self.window_type}_Width']
+        window_min, window_max = window_center - window_width/2, window_center + window_width/2
+        img = img.clip(min=window_min, max=window_max)
+        img = img - img.min()
+        img = img/img.max()
+        return img
+
+class Normalize():
+    def __call__(self, img):
+        img = img - img.min()
+        img = img/img.max()
+        return img
+
 def get_avg_size(csv_file_path, root_dir):
     dataset = BcDataset(csv_file_path, root_dir, transformations=transforms.ToTensor())
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=1, num_workers=1, shuffle=True)
@@ -133,38 +164,6 @@ class BcDatasetBase(Dataset):
 #         return p_dict
 
 
-
-class HorizontalFlip():
-    def __call__(self, img):
-        return img.transpose(Image.FLIP_LEFT_RIGHT)
-
-
-class ApplyWindow():
-    def __init__(self, window_type):
-        self.window_type = window_type
-    def __call__(self, img, img_info):
-        window_center = img_info[f'{self.window_type}_Center']
-        window_width = img_info[f'{self.window_type}_Width']
-        window_min, window_max = window_center - window_width/2, window_center + window_width/2
-        return img.clip(min=window_min, max=window_max)
-
-class ApplyWindowNormalize():
-    def __init__(self, window_type):
-        self.window_type = window_type
-    def __call__(self, img, img_info):
-        window_center = img_info[f'{self.window_type}_Center']
-        window_width = img_info[f'{self.window_type}_Width']
-        window_min, window_max = window_center - window_width/2, window_center + window_width/2
-        img = img.clip(min=window_min, max=window_max)
-        img = img - img.min()
-        img = img/img.max()
-        return img
-
-class Normalize():
-    def __call__(self, img):
-        img = img - img.min()
-        img = img/img.max()
-        return img
 
 
 class BcDatasetLocal():
