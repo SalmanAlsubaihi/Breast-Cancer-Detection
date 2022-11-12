@@ -133,7 +133,7 @@ class BcDatasetLocal():
 
 
 
-class BcDatasetMiniDdsm(BcDatasetBase):
+class BcDatasetMiniDdsm(Dataset):
     def __init__(self, csv_file_path, root_dir, classification_task, transformations=None, horizontal_flip=True):
         self.df = pd.read_csv(csv_file_path)
         file_names = self.df['fileName'].values
