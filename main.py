@@ -8,8 +8,8 @@ from utils import calc_accuracy_and_loss, ModelSaver, Loger, largest_component
 from torchvision import transforms
 from tqdm import tqdm
 from dataset import BcDatasetMiniDdsm, BcDatasetLocal, ToFloat, get_mean_and_std, dataset_paths, dataset_class, ApplyWindow, ApplyWindowNormalize, HorizontalFlip, Normalize
-from models import get_backbone_net, FourSingleDimOutNet, FourViewModuleSingleDim, FourViewModuleConv
-from custom_loss_functions import ViewLoss, loss_functions
+from models import get_backbone_net, model_names
+from custom_loss_functions import loss_functions
 import time
 import matplotlib.pyplot as plt
 # from prefetch_generator import BackgroundGenerator
@@ -28,7 +28,7 @@ parser.add_argument('--lr_decay_every', default=20, type=int)
 parser.add_argument('--lr_gamma', default=0.5, type=float)
 parser.add_argument('--loss_type', default='cross_entropy', type=str)
 parser.add_argument('--lr', default=0.00001, type=float)
-parser.add_argument('--model', default=FourViewModuleSingleDim)
+parser.add_argument('--model', default='FourViewModuleSingleDim')
 parser.add_argument('--backbone_net', default='resnet18', type=str)
 parser.add_argument('--classification_task', default='tumer', type=str)
 args = parser.parse_args()
@@ -50,7 +50,7 @@ def main():
     val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=1, num_workers=1, shuffle=False)
 
     backbone_net = get_backbone_net(args.backbone_net, 100, False);
-    net = args.model(train_dataset.num_classes, backbone_net = backbone_net).to(device)
+    net = model_names[args.model](train_dataset.num_classes, backbone_net = backbone_net).to(device)
 
     optimizer = torch.optim.Adam(net.parameters(), lr=args.lr, weight_decay=0.0)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, args.lr_decay_every, gamma=args.lr_gamma)

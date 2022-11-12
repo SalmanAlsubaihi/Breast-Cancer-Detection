@@ -25,7 +25,7 @@ def get_backbone_net(backbone, out_dim, is_pretrained):
 
 
 class FourSingleDimOutNet(nn.Module):
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__()
         self.feature_extractor = kwargs['backbone_net']
     def forward(self, batch):
@@ -92,3 +92,10 @@ class FourViewModuleConv(nn.Module):
         out_all = torch.cat([out_L_CC, out_R_CC, out_L_MLO, out_R_MLO], dim=1)
         out = self.classifier(out_all)
         return out
+
+
+model_names = {
+    'FourSingleDimOutNet': FourSingleDimOutNet,
+    'FourViewModuleSingleDim': FourViewModuleSingleDim,
+    'FourViewModuleConv': FourViewModuleConv,
+}
