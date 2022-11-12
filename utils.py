@@ -77,7 +77,10 @@ class Loger():
     def __init__(self, hparams):
         self.exp_start_time = '_'.join(time.asctime().split(' ')[1:])
         exp_name = '--'.join([f'{k}={v}' for k,v in hparams.items()])
-        self.log_dir = f'log/vio_lut_pre-processing'
+        self.log_dir = f'log/{exp_name}'
+        if len(self.log_dir) > 255:
+            print('log file name was shortend to be < 255')
+            self.log_dir = self.log_dir[255]
         self.writer = SummaryWriter(log_dir=self.log_dir)  ## choose name
         self.all_loss, self.all_pred, self.all_label = [], [], []
         self.train_mode = hparams['train_mode']
