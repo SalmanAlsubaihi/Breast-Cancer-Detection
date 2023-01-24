@@ -7,6 +7,7 @@ With this project you can train a breast cancer detection model on the Mini-DDSM
 Requirements:
 - PyTorch 1.11.0
 - Torchvision 0.2.2
+
 In addition to the preceding requirements, run the following comands:
 ```sh
 conda env create -f environment.yml
