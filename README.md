@@ -30,5 +30,3 @@ To visualize and track your experiments run the following command to start Tenso
 ```sh
 tensorboard --logdir log/
 ```
-
-yaml file
